@@ -62,3 +62,47 @@ void NodeField::drawBackground(QPainter *painter, const QRectF &rect)
 
     painter->drawLines(lines);
 }
+
+void NodeField::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        QGraphicsItem* item = itemAt(event->pos());
+
+        if (item && item->flags() & QGraphicsItem::ItemIsMovable) {
+            QGraphicsView::mousePressEvent(event);
+        } else {
+            m_isPanning = true;
+            m_lastMousePos = event->pos();
+            setCursor(Qt::ClosedHandCursor);
+            event->accept();
+            return;
+        }
+    }
+    QGraphicsView::mousePressEvent(event);
+}
+
+void NodeField::mouseMoveEvent(QMouseEvent *event)
+{
+    if (m_isPanning) {
+        QPoint delta = event->pos() - m_lastMousePos;
+        m_lastMousePos = event->pos();
+
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - delta.x());
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - delta.y());
+
+        event->accept();
+    } else {
+        QGraphicsView::mouseMoveEvent(event);
+    }
+}
+
+void NodeField::mouseReleaseEvent(QMouseEvent *event)
+{
+    if ((event->button() == Qt::LeftButton) && m_isPanning) {
+        m_isPanning = false;
+        setCursor(Qt::ArrowCursor);
+        event->accept();
+    } else {
+        QGraphicsView::mouseReleaseEvent(event);
+    }
+}
