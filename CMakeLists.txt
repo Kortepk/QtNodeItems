@@ -38,6 +38,7 @@ else()
     else()
         add_executable(QtNodeItems
             ${PROJECT_SOURCES}
+            nodeitem.h nodeitem.cpp
         )
     endif()
 endif()

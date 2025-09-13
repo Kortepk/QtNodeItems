@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>387</height>
+    <width>568</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,9 +21,16 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Node name:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLineEdit" name="nodeName_le">
         <property name="text">
-         <string>Title</string>
+         <string>Name</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -96,7 +103,7 @@ border-radius: 4px</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>558</width>
+     <width>568</width>
      <height>22</height>
     </rect>
    </property>

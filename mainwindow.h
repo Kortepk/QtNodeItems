@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QColorDialog>
 #include <qDebug>
+#include <QGraphicsScene>
+
+#include "nodeitem.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,5 +30,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QColor colorNow;
+    QMap<QString, NodeItem*> nodeMap;
+    QGraphicsScene *mainScene;
 };
 #endif // MAINWINDOW_H
