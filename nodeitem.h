@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QWidget>
 #include <QPen>
+#include <QRadioButton>
 
 class NodeItem : public QGraphicsRectItem
 {
@@ -16,6 +17,7 @@ public:
     QString nodeId();
     void setText(QString newText);
     QString text();
+    //QVector<QRadioButton *> getConnectionButton();
 
 protected:
     void generalInit();
@@ -23,7 +25,6 @@ protected:
 
     QString NodeId = "";
     QString TitleText = "";
-
     QFont nodeFont;
 };
 
