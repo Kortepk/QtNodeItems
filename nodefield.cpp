@@ -106,3 +106,21 @@ void NodeField::mouseReleaseEvent(QMouseEvent *event)
         QGraphicsView::mouseReleaseEvent(event);
     }
 }
+
+QPointF NodeField::getCenterScenePos()
+{
+    QPoint viewportCenter(viewport()->width() / 2, viewport()->height() / 2);
+    return mapToScene(viewportCenter);
+}
+
+void NodeField::addItem(QGraphicsItem *item)
+{
+    QPointF newPos = getCenterScenePos();
+    QRectF itemRect = item->boundingRect();
+
+    newPos -= QPointF(itemRect.width()/2, itemRect.height()/2);
+
+    item->setPos(newPos);
+
+    scene()->addItem(item);
+}
