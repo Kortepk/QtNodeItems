@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QGraphicsView" name="mainView_gv"/>
+     <widget class="NodeField" name="mainView_gv"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -110,6 +110,13 @@ border-radius: 4px</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NodeField</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">nodefield.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

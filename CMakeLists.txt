@@ -39,6 +39,7 @@ else()
         add_executable(QtNodeItems
             ${PROJECT_SOURCES}
             nodeitem.h nodeitem.cpp
+            nodefield.h nodefield.cpp
         )
     endif()
 endif()
@@ -69,3 +70,5 @@ install(TARGETS QtNodeItems
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(QtNodeItems)
 endif()
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
