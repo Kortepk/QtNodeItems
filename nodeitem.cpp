@@ -51,8 +51,34 @@ QString NodeItem::text()
 void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QGraphicsRectItem::paint(painter, option, widget);
+    painter->save();
 
     painter->setFont(nodeFont);
-
     painter->drawText(QPointF(5, 10), TitleText);
+
+
+    QBrush pointBrush(QColor(0, 0, 255, 128));
+
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(pointBrush);
+
+    QRectF rect = this->rect();
+    qreal width = rect.width();
+    qreal height = rect.height();
+
+    qreal radius = 5;
+    qreal margin = 10;
+
+    QPointF point1(width/2, -margin);
+    QPointF point2(width + margin, height/2);
+    QPointF point3(width/2, height + margin);
+    QPointF point4(-margin, height/2);
+
+    painter->drawEllipse(point1, radius, radius);
+    painter->drawEllipse(point2, radius, radius);
+    painter->drawEllipse(point3, radius, radius);
+    painter->drawEllipse(point4, radius, radius);
+
+    painter->restore();
 }
+

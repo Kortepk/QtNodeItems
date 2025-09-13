@@ -3,13 +3,18 @@
 NodeField::NodeField(QWidget *parent)
     : QGraphicsView(parent)
 {
-
+    generalInit();
 }
 
 NodeField::NodeField(QGraphicsScene *scene, QWidget *parent)
     : QGraphicsView(scene, parent)
 {
+    generalInit();
+}
 
+void NodeField::generalInit()
+{
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 void NodeField::wheelEvent(QWheelEvent *event)

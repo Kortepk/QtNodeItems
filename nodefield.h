@@ -9,6 +9,9 @@
 #include <QScrollBar>
 #include <QGraphicsItem>
 #include <QRect>
+#include <QRadioButton>
+
+#include "nodeitem.h"
 
 class NodeField : public QGraphicsView
 {
@@ -18,6 +21,7 @@ public:
     void addItem(QGraphicsItem *item);
 
 protected:
+    void generalInit();
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void wheelEvent(QWheelEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
