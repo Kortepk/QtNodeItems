@@ -12,12 +12,35 @@ NodeField::NodeField(QGraphicsScene *scene, QWidget *parent)
 
 }
 
+void NodeField::wheelEvent(QWheelEvent *event)
+{
+    static qreal scaleTotal = 1;
+
+    qreal scaleOld = scaleTotal;
+    qreal scaleFactor = 1;
+
+    if(event->angleDelta().y() > 0){
+        scaleTotal += 0.1;
+    }
+    else{
+        scaleTotal -= 0.1;
+    }
+
+    if(scaleTotal < 0.1)
+        scaleTotal = 0.1;
+
+    scaleFactor = scaleTotal/scaleOld;
+    scale(scaleFactor, scaleFactor);
+
+    //qDebug() << scaleTotal << scaleFactor;
+
+    QGraphicsView::wheelEvent(event);
+}
+
 void NodeField::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    // Рисуем стандартный фон (белый)
     painter->fillRect(rect, Qt::white);
 
-    // Рисуем сетку
     painter->setPen(QColor(210, 210, 210));
 
     int m_gridSize = 50;
