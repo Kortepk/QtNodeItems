@@ -1,58 +1,75 @@
 #include "nodeitem.h"
-#include "qpainter.h"
 
-NodeItem::NodeItem(QGraphicsItem *parent)
-    : QGraphicsRectItem(parent)
+NodeItem::NodeItem(QWidget *parent)
+    : QWidget{parent}
 {
+    mainTable = new NodeTable();
     generalInit();
 }
 
-NodeItem::NodeItem(const QRectF &rect, QGraphicsItem *parent)
-    : QGraphicsRectItem(rect, parent)
+NodeItem::NodeItem(qreal x, qreal y, qreal width, qreal height, QWidget *parent)
+    : QWidget{parent}
 {
-    generalInit();
-}
-
-NodeItem::NodeItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
-    : QGraphicsRectItem(x, y, width, height, parent)
-{
+    mainTable = new NodeTable(x, y, width, height);
     generalInit();
 }
 
 void NodeItem::generalInit()
 {
-    setFlag(ItemIsMovable, true);
-    setPen(QPen(Qt::black, 2)); // Border
+    for(int i = 0; i < 4; i ++){
+        QPushButton *rb = new QPushButton();
+        rb->setMaximumSize(12, 12);
+        rb->setStyleSheet("background-color: transparent;"
+                          "border: 1px solid black;"
+                          "border-radius: 6px;");
+        conBut.append(rb);
+    }
 
-    nodeFont.setFamily("Arial");
-    nodeFont.setPixelSize(10);
-}
-
-void NodeItem::setNodeId(QString newNodeId)
-{
-    NodeId = newNodeId;
-}
-
-QString NodeItem::nodeId()
-{
-    return NodeId;
+    connect(mainTable, &NodeTable::newPosition, this, &NodeItem::moveConButtons);
 }
 
 void NodeItem::setText(QString newText)
 {
     TitleText = newText;
+    mainTable->setText(newText);
+
 }
 
-QString NodeItem::text()
+void NodeItem::setNodeId(QString newNodeId)
 {
-    return TitleText;
+    NodeId = newNodeId;
+    mainTable->setNodeId(newNodeId);
 }
 
-void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void NodeItem::setBrush(QBrush newBrush)
 {
-    QGraphicsRectItem::paint(painter, option, widget);
+    tableBrush = newBrush;
+    mainTable->setBrush(newBrush);
+}
 
-    painter->setFont(nodeFont);
+NodeTable *NodeItem::getTable()
+{
+    return mainTable;
+}
 
-    painter->drawText(QPointF(5, 10), TitleText);
+QVector<QPushButton *> NodeItem::getConnectionButton()
+{
+    return conBut;
+}
+
+void NodeItem::moveConButtons(QPointF newPos)
+{
+    QRectF rect = mainTable->boundingRect();
+
+    qreal w = rect.width();
+    qreal h = rect.height();
+    qreal diam = conBut[0]->size().width();
+    qDebug() << diam;
+    qreal m = 6; // margin
+
+    conBut[0]->move(newPos.x() + w/2 - diam/2, newPos.y() - diam - m);
+    conBut[1]->move(newPos.x() + w + m, newPos.y() + h/2 - diam/2);
+    conBut[2]->move(newPos.x() + w/2 - diam/2, newPos.y() + h + m);
+    conBut[3]->move(newPos.x() - diam - m, newPos.y() + h/2 - diam/2);
+
 }

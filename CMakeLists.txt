@@ -40,6 +40,7 @@ else()
             ${PROJECT_SOURCES}
             nodeitem.h nodeitem.cpp
             nodefield.h nodefield.cpp
+            nodetable.h nodetable.cpp
         )
     endif()
 endif()

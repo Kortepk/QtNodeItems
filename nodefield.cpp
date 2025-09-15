@@ -3,13 +3,18 @@
 NodeField::NodeField(QWidget *parent)
     : QGraphicsView(parent)
 {
-
+    generalInit();
 }
 
 NodeField::NodeField(QGraphicsScene *scene, QWidget *parent)
     : QGraphicsView(scene, parent)
 {
+    generalInit();
+}
 
+void NodeField::generalInit()
+{
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 void NodeField::wheelEvent(QWheelEvent *event)
@@ -124,3 +129,15 @@ void NodeField::addItem(QGraphicsItem *item)
 
     scene()->addItem(item);
 }
+
+void NodeField::addNode(NodeItem *node)
+{
+    scene()->addItem(node->getTable());
+
+    QVector<QPushButton *> butVect = node->getConnectionButton();
+
+    for(int i = 0; i < butVect.length(); i++)
+        scene()->addWidget(butVect[i]);
+
+}
+

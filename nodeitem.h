@@ -1,31 +1,33 @@
 #ifndef NODEITEM_H
 #define NODEITEM_H
-
-#include <QObject>
-#include <QGraphicsRectItem>
 #include <QWidget>
-#include <QPen>
-#include <QRadioButton>
+#include <QPushButton>
+#include "nodetable.h"
 
-class NodeItem : public QGraphicsRectItem
+class NodeItem : public QWidget
 {
+    Q_OBJECT
 public:
-    explicit NodeItem(QGraphicsItem *parent = nullptr);
-    NodeItem(const QRectF &customRect, QGraphicsItem *parent = nullptr);
-    NodeItem(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
-    void setNodeId(QString newNodeId);
-    QString nodeId();
+    explicit NodeItem(QWidget *parent = nullptr);
+    NodeItem(qreal x, qreal y, qreal width, qreal height, QWidget *parent = nullptr);
+    void generalInit();
+
     void setText(QString newText);
-    QString text();
-    //QVector<QRadioButton *> getConnectionButton();
+    void setNodeId(QString newNodeId);
+    void setBrush(QBrush newBrush);
+    NodeTable *getTable();
+    QVector<QPushButton *> getConnectionButton();
 
 protected:
-    void generalInit();
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    QString TitleText;
+    QString NodeId;
+    QBrush tableBrush;
+    NodeTable *mainTable;
+    QVector<QPushButton *> conBut;
 
-    QString NodeId = "";
-    QString TitleText = "";
-    QFont nodeFont;
+protected slots:
+    void moveConButtons(QPointF newPos);
+
 };
 
 #endif // NODEITEM_H

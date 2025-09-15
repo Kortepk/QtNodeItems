@@ -16,7 +16,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="NodeField" name="mainView_gv"/>
+     <widget class="NodeField" name="mainView_gv">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">

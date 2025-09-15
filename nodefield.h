@@ -9,6 +9,8 @@
 #include <QScrollBar>
 #include <QGraphicsItem>
 #include <QRect>
+#include "nodeitem.h"
+#include "nodetable.h"
 
 class NodeField : public QGraphicsView
 {
@@ -16,8 +18,10 @@ public:
     explicit NodeField(QWidget *parent = nullptr);
     NodeField(QGraphicsScene *scene, QWidget *parent = nullptr);
     void addItem(QGraphicsItem *item);
+    void addNode(NodeItem *node);
 
 protected:
+    void generalInit();
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void wheelEvent(QWheelEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;

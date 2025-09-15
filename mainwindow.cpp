@@ -40,7 +40,7 @@ void MainWindow::on_addNode_pb_clicked()
     node->setText(nodeName);
     node->setBrush(QBrush(colorNow));
 
-    ui->mainView_gv->addItem(node);
+    ui->mainView_gv->addNode(node);
 
     qDebug() << nodeMap;
 }
