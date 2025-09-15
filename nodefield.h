@@ -9,8 +9,8 @@
 #include <QScrollBar>
 #include <QGraphicsItem>
 #include <QRect>
+#include <QGraphicsProxyWidget>
 #include "nodeitem.h"
-#include "nodetable.h"
 
 class NodeField : public QGraphicsView
 {
@@ -27,6 +27,11 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+
     QPointF getCenterScenePos();
     QPoint m_lastMousePos;
     bool m_isPanning;

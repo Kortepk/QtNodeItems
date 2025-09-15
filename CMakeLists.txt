@@ -41,6 +41,7 @@ else()
             nodeitem.h nodeitem.cpp
             nodefield.h nodefield.cpp
             nodetable.h nodetable.cpp
+            connectionbutton.h connectionbutton.cpp
         )
     endif()
 endif()

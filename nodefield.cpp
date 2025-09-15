@@ -14,6 +14,7 @@ NodeField::NodeField(QGraphicsScene *scene, QWidget *parent)
 
 void NodeField::generalInit()
 {
+    setAcceptDrops(true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
@@ -73,7 +74,9 @@ void NodeField::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         QGraphicsItem* item = itemAt(event->pos());
 
-        if (item && item->flags() & QGraphicsItem::ItemIsMovable) {
+        if (item && (item->flags() & (QGraphicsItem::ItemIsMovable |
+                                      QGraphicsItem::ItemIsFocusScope)))
+        {
             QGraphicsView::mousePressEvent(event);
         } else {
             m_isPanning = true;
@@ -112,6 +115,26 @@ void NodeField::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
+void NodeField::dragEnterEvent(QDragEnterEvent *event)
+{
+    QString text = event->mimeData()->text();
+    qDebug() << text;
+    event->accept();
+
+    QGraphicsView::dragEnterEvent(event);
+}
+
+void NodeField::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    QGraphicsView::dragLeaveEvent(event);
+}
+
+void NodeField::dragMoveEvent(QDragMoveEvent *event)
+{
+    QGraphicsView::dragMoveEvent(event);
+}
+
+
 QPointF NodeField::getCenterScenePos()
 {
     QPoint viewportCenter(viewport()->width() / 2, viewport()->height() / 2);
@@ -134,10 +157,11 @@ void NodeField::addNode(NodeItem *node)
 {
     scene()->addItem(node->getTable());
 
-    QVector<QPushButton *> butVect = node->getConnectionButton();
+    QVector<ConnectionButton *> butVect = node->getConnectionButton();
 
-    for(int i = 0; i < butVect.length(); i++)
-        scene()->addWidget(butVect[i]);
+    for(int i = 0; i < butVect.length(); i++){
+        scene()->addItem(butVect[i]);
+    }
 
 }
 

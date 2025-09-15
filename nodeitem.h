@@ -2,7 +2,10 @@
 #define NODEITEM_H
 #include <QWidget>
 #include <QPushButton>
+#include <QDrag>
+#include <QMimeData>
 #include "nodetable.h"
+#include "connectionbutton.h"
 
 class NodeItem : public QWidget
 {
@@ -16,17 +19,18 @@ public:
     void setNodeId(QString newNodeId);
     void setBrush(QBrush newBrush);
     NodeTable *getTable();
-    QVector<QPushButton *> getConnectionButton();
+    QVector<ConnectionButton *> getConnectionButton();
 
 protected:
     QString TitleText;
     QString NodeId;
     QBrush tableBrush;
     NodeTable *mainTable;
-    QVector<QPushButton *> conBut;
+    QVector<ConnectionButton *> conBut;
 
 protected slots:
     void moveConButtons(QPointF newPos);
+    void doteClicked();
 
 };
 
