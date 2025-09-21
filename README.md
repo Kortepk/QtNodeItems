@@ -26,8 +26,8 @@ QtNodeItems provides a simple yet powerful framework for creating node-based int
 3. Include the necessary headers in your application:
 
 ```cpp
-#include "nodeitem.h"  // For creating nodes
-#include "nodefield.h" // For display and interaction
+#include "nodeLib/nodeitem.h"  // For creating nodes
+#include "nodeLib/nodefield.h" // For display and interaction
 ```
 
 ### Method 2: Using Qt Designer
@@ -42,8 +42,8 @@ QtNodeItems provides a simple yet powerful framework for creating node-based int
 ## Quick Start
 
 ```cpp
-#include "nodeitem.h"
-#include "nodefield.h"
+#include "nodeLib/nodeitem.h"
+#include "nodeLib/nodefield.h"
 
 // Create a node field
 NodeField *nodeField = new NodeField(parent);

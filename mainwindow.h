@@ -6,7 +6,7 @@
 #include <qDebug>
 #include <QGraphicsScene>
 
-#include "nodeitem.h"
+#include "nodeLib/nodeitem.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

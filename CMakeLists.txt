@@ -38,10 +38,10 @@ else()
     else()
         add_executable(QtNodeItems
             ${PROJECT_SOURCES}
-            nodeitem.h nodeitem.cpp
-            nodefield.h nodefield.cpp
-            nodetable.h nodetable.cpp
-            connectionbutton.h connectionbutton.cpp
+            nodeLib/connectionbutton.cpp nodeLib/connectionbutton.h
+            nodeLib/nodefield.cpp nodeLib/nodefield.h
+            nodeLib/nodeitem.cpp nodeLib/nodeitem.h
+            nodeLib/nodetable.cpp nodeLib/nodetable.h
         )
     endif()
 endif()
