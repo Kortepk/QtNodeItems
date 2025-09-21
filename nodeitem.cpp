@@ -27,7 +27,7 @@ void NodeItem::generalInit()
     beginPoint.resize(conBut.count());
     conNode.resize(conBut.count());
 
-    connect(mainTable, &NodeTable::newPosition, this, &NodeItem::moveConButtons);
+    connect(mainTable, &NodeTable::newPosition, this, &NodeItem::updateConButtons);
     connect(mainTable, &NodeTable::destroyed, this, &NodeItem::tableDestroyedHandler);
 }
 
@@ -77,7 +77,7 @@ QVector<ConnectionButton *> NodeItem::getConnectionButton()
     return conBut;
 }
 
-void NodeItem::moveConButtons(QPointF newPos)
+void NodeItem::updateConButtons(QPointF newPos)
 {
     QRectF rect = mainTable->boundingRect();
 
@@ -107,6 +107,39 @@ void NodeItem::moveConButtons(QPointF newPos)
                 ln.setP2(point[i] + center);
             conLine[i]->setLine(ln);
         }
+    }
+}
+
+void NodeItem::updateOnlyLine()
+{
+    QRectF rect = mainTable->boundingRect();
+    QPointF newPos = mainTable->pos();
+
+    qreal w = rect.width();
+    qreal h = rect.height();
+    qreal rad =  conBut[0]->boundingRect().width()/2;
+    qreal m = 6; // margin
+
+    QPointF point[BUTTON_COUNT] = {
+        {newPos.x() + w/2, newPos.y() - rad - m},
+        {newPos.x() + w + m + rad, newPos.y() + h/2},
+        {newPos.x() + w/2, newPos.y() + h + m + rad},
+        {newPos.x() - rad - m, newPos.y() + h/2}
+    };
+
+    QPointF center(rad, rad);
+
+    for(int i = 0; i < BUTTON_COUNT; i++){
+        if(conLine[i] == nullptr)
+            continue;
+
+        QLineF ln = conLine[i]->line();
+        if(beginPoint[i])
+            ln.setP1(point[i]);
+        else
+            ln.setP2(point[i]);
+
+        conLine[i]->setLine(ln);
     }
 }
 
@@ -194,6 +227,6 @@ void NodeItem::addConectionLine(QGraphicsLineItem *newLine, int butIndex, bool i
     conNode[butIndex] = otherNode;
 
     // Update position
-    moveConButtons(mainTable->pos());
+    updateOnlyLine();
 }
 

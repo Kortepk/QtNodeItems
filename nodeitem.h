@@ -34,6 +34,7 @@ signals:
 
 protected:
     void tableDestroyedHandler();
+    void updateOnlyLine();
 
     QString TitleText;
     QString NodeId;
@@ -46,7 +47,7 @@ protected:
     QPointF conButtonStartPos;
 
 protected slots:
-    void moveConButtons(QPointF newPos);
+    void updateConButtons(QPointF newPos);
     void doteClicked(int butIndex);
     void bindNodeHandler(int index, QPair<QString, int> sender);
 };
