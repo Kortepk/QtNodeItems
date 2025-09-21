@@ -20,6 +20,7 @@ void NodeTable::generalInit()
 
     nodeFont.setFamily("Arial");
     nodeFont.setPixelSize(10);
+    titleTextRect = rectItem.adjusted(5, 5, -5, -rectItem.height() * 0.8);
 }
 
 void NodeTable::setNodeId(QString newNodeId)
@@ -47,10 +48,10 @@ void NodeTable::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setPen(QPen(Qt::black, 2)); // Border
     painter->setBrush(mainBrush);
 
-    painter->drawRect(rectItem);
+    painter->drawRoundedRect(rectItem, 10, 10);
 
     painter->setFont(nodeFont);
-    painter->drawText(QPointF(5, 10), TitleText);
+    painter->drawText(titleTextRect, Qt::AlignCenter, TitleText);
 }
 
 
@@ -66,6 +67,14 @@ void NodeTable::setBrush(QBrush newBrush)
     mainBrush = newBrush;
 }
 
+void NodeTable::setPos(QPointF newPos)
+{
+    QGraphicsObject::setPos(newPos);
+
+    emit newPosition(newPos); // Update points
+}
+
+
 QRectF NodeTable::boundingRect() const
 {
     return rectItem;
@@ -76,3 +85,20 @@ bool NodeTable::event(QEvent *ev)
     return QObject::event(ev);
 }
 
+void NodeTable::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsObject::mousePressEvent(event);
+
+    if(event->buttons() == Qt::RightButton){
+        QMenu menu;
+        QAction* deleteNode = new QAction("Delete node", &menu);
+
+        menu.addAction(deleteNode);
+        QPoint globalPos = event->screenPos();
+        QAction* selectedAction = menu.exec(globalPos);
+
+        if(selectedAction == deleteNode) {
+            deleteLater();
+        }
+    }
+}

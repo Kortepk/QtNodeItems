@@ -6,7 +6,8 @@
 #include <QRadioButton>
 #include <QGraphicsSceneMouseEvent>
 #include <QRect>
-#include "QDebug"
+#include <QMenu>
+#include <QDebug>
 
 class NodeTable : public QGraphicsObject
 {
@@ -19,6 +20,7 @@ public:
     void setText(QString newText);
     QString text();
     void setBrush(QBrush newBrush);
+    void setPos(QPointF newPos);
     QRectF boundingRect() const override;
 
 signals:
@@ -28,6 +30,7 @@ protected:
     void generalInit();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     virtual bool event(QEvent *ev) override;
 
@@ -36,7 +39,7 @@ protected:
     QFont nodeFont;
     QBrush mainBrush;
     QRectF rectItem;
-
+    QRectF titleTextRect;
 };
 
 #endif // NODETABLE_H

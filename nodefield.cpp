@@ -16,6 +16,14 @@ void NodeField::generalInit()
 {
     setAcceptDrops(true);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setRenderHint(QPainter::Antialiasing, true);
+}
+
+void NodeField::initLine()
+{
+    cursorLine = new QGraphicsLineItem(QLineF(startConnectPos, startConnectPos));
+    cursorLine->setPen(QPen(QColor(71, 138, 255), 2, Qt::DashLine));
+    scene()->addItem(cursorLine);
 }
 
 void NodeField::wheelEvent(QWheelEvent *event)
@@ -117,11 +125,22 @@ void NodeField::mouseReleaseEvent(QMouseEvent *event)
 
 void NodeField::dragEnterEvent(QDragEnterEvent *event)
 {
-    QString text = event->mimeData()->text();
-    qDebug() << text;
-    event->accept();
-
     QGraphicsView::dragEnterEvent(event);
+
+    if (event->mimeData()->hasFormat("application/node-data")) {
+        //int butIndex = event->mimeData()->hasFormat("application/node-data");
+        QString nodeId = event->mimeData()->text();
+
+        if(nodeMap.contains(nodeId)){
+            event->acceptProposedAction();
+
+            startConnectPos = nodeMap[nodeId]->getDragStartPos();
+
+            if (!cursorLine)
+                initLine();
+        }
+    } else
+        event->ignore();
 }
 
 void NodeField::dragLeaveEvent(QDragLeaveEvent *event)
@@ -131,9 +150,28 @@ void NodeField::dragLeaveEvent(QDragLeaveEvent *event)
 
 void NodeField::dragMoveEvent(QDragMoveEvent *event)
 {
-    QGraphicsView::dragMoveEvent(event);
+    QGraphicsView::dragMoveEvent(event); // child handle event
+
+    if (event->mimeData()->hasFormat("application/node-data")) {
+        event->acceptProposedAction();
+        if (cursorLine) {
+            QPointF mousePos = mapToScene(event->pos());
+            cursorLine->setLine(QLineF(startConnectPos, mousePos));
+        }
+    } else {
+        event->ignore();
+    }
 }
 
+void NodeField::dropEvent(QDropEvent *event)
+{
+    QGraphicsView::dropEvent(event);
+
+    if (cursorLine != nullptr) {
+        delete cursorLine;
+        cursorLine = nullptr;
+    }
+}
 
 QPointF NodeField::getCenterScenePos()
 {
@@ -155,7 +193,17 @@ void NodeField::addItem(QGraphicsItem *item)
 
 void NodeField::addNode(NodeItem *node)
 {
+    QPointF newPos = getCenterScenePos();
+    NodeTable *nt = node->getTable();
+    QRectF itemRect = nt->boundingRect();
+
+    newPos -= QPointF(itemRect.width()/2, itemRect.height()/2);
+    nt->setPos(newPos);
+
     scene()->addItem(node->getTable());
+
+    nodeMap[node->getNodeId()] = node;
+    connect(node, &NodeItem::createLinkNode, this, &NodeField::linkTwoNode);
 
     QVector<ConnectionButton *> butVect = node->getConnectionButton();
 
@@ -165,3 +213,10 @@ void NodeField::addNode(NodeItem *node)
 
 }
 
+void NodeField::linkTwoNode(QPair<QString, int> node1, QPair<QString, int> node2)
+{
+    nodeMap[node1.first]->addConectionLine(cursorLine, node1.second, false, nodeMap[node2.first]);
+    nodeMap[node2.first]->addConectionLine(cursorLine, node2.second, true, nodeMap[node1.first]);
+
+    cursorLine = nullptr;
+}

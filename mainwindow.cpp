@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     colorNow = QColor(Qt::white);
 
-    mainScene = new QGraphicsScene(0, 0, 550-5, 300);
+    mainScene = new QGraphicsScene(0, 0, 2000, 2000);
     ui->mainView_gv->setScene(mainScene);
 }
 
@@ -36,6 +36,7 @@ void MainWindow::on_addNode_pb_clicked()
 
     // nodeId - unique value
     nodeMap[nodeId] = node;
+    node->setNodeId(nodeId);
 
     node->setText(nodeName);
     node->setBrush(QBrush(colorNow));
